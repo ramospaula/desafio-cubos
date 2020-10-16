@@ -10,7 +10,8 @@ desafio feito pela empresa cubos durante o processo seletivo da vaga de desenvol
 
 ### dia específico
 
-`{
+```bash
+{
   "ruleType":"Specific Day",
   "day":"10/25/2020",
   "intervals":[
@@ -23,7 +24,7 @@ desafio feito pela empresa cubos durante o processo seletivo da vaga de desenvol
       "end":"11:00"
     }
   ]
-}`
+}```
 
 ### semanalmente
 

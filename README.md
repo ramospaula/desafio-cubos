@@ -100,7 +100,7 @@ GET http://localhost:3333/schedules
 Na Query da consulta deve esta presente as datas dos intervalos com start(data inicial) e end(data final)
 
 ```bash
-### Exemplo para a query da requisição
+Exemplo para a query da requisição
 start = 10/24/2020
 end = 10/26/2020
 ```

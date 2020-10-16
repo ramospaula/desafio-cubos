@@ -1,74 +1,114 @@
+import { Rules } from './../models/rules';
 import { Request, Response } from 'express';
 import { badRequest } from '../services/util/message';
-import  Schedules  from '../models/schedules';
+import Schedules from '../models/schedules';
 import getJson from '../JsonFile/getJson';
-import saveJson from '../JsonFile/saveJson';
+import updateJson from '../JsonFile/updateJson';
+import { isBefore, format, eachDayOfInterval, isEqual, parse, isValid } from 'date-fns';
 
-const nameFileRules = './example.json';
+import pt from 'date-fns/locale/pt-BR';
+
+const rules = './rules.json';
 
 const nameFile = 'schedules.json';
 
 class SchedulesController {
-    
+
     async insertDate(request: Request, response: Response) {
-    
-        try{
-        const listRules = getJson(nameFileRules);
 
-        const newArray=[];
+        try {
+            const listRules = getJson(rules);
 
-        console.log("LISTA EXAMPLE: " + JSON.stringify(listRules));
+            const query = request.query;
 
-
-        let schedules: Schedules[];
- 
-
-        const schedule = {
-            day: Date,
-            intervals: {
-                start: Date,
-                end: Date
+            if (!query.start || !query.end) {
+                return badRequest(response, "está faltando valores para a consultar");
             }
-        } 
 
-        const obj = Object;
-        const arry =  Array<Object>();
+            const queryStart = query.start as string;
+            const queryEnd = query.end as string;
 
-        for(var l in listRules){
-            console.log("tamanho intervalo: " + listRules[l].intervals.length)
-            if(!listRules[l].day){
-                console.log("dia: " + listRules[l].day);
-                return badRequest(response, "dia indisponivel");
-            }else {
-                schedule.day = listRules[l].day; 
+            const startDate = new Date(queryStart);
+            const endDate = new Date(queryEnd);
+
+            if (!isValid(startDate) || !isValid(endDate)){
+                return badRequest(response, "A data não é valida");
             }
-            for(var i = 0; i < listRules[l].intervals.length; i++){
-                if(!listRules[l].intervals){
-                    console.log("horário: " + listRules[l].intervals[i])
-                    return badRequest(response, "horário indisponivel");
-                }else {
-                    console.log("dentro for: " + listRules[l].intervals.length)
-                    schedule.intervals = listRules[l].intervals[i];
-                    newArray.push(listRules[l].intervals[i]);
-                    console.log(schedule.intervals);
+
+            if (!isBefore(startDate, endDate)) {
+                return badRequest(response, "o atendimento está com data passada");
+            }
+
+            let eachDayofQuery = eachDayOfInterval({ start: startDate, end: endDate });
+
+            let arraySchedules: Array<Schedules>;
+
+            arraySchedules = [];
+
+            eachDayofQuery.map((dayOfQuery: any) => {
+
+                let schedulesOfDay: Schedules = {
+                    day: format(dayOfQuery, 'dd-MM-yyyy', { locale: pt}),
+                    intervals: []
                 }
-            }     
-            saveJson(nameFile, schedule);
+
+                listRules.map((rule: any) => {
+
+                    if (rule.ruleType == Rules.Weekly) {
+                        
+                        rule.weekDay.map((dayWeek: number) => {
+                            
+                            if (dayOfQuery.getDay() == dayWeek) {
+                                rule.intervals.map((intervals: any) => {
+                                    schedulesOfDay.intervals.push({start: intervals.start, end: intervals.end});
+                                });
+                                
+                            }
+
+                        });
+                    }
+                    if (rule.ruleType == Rules.Specific_Day) {
+
+                        let dateParse = parse(rule.day, 'MM/dd/yyyy', new Date());
+
+                        if (isEqual(dateParse, dayOfQuery)) {
+                            rule.intervals.map((intervals: any) => {
+                                schedulesOfDay.intervals.push({start: intervals.start, end: intervals.end});
+                            });
+                        }
+                    }
+                    
+                });
+
+                arraySchedules.push(schedulesOfDay);
+
+            });
+
+            arraySchedules.map((eachDay: any) => {
+                        
+                listRules.map((rule: any) => {
+
+                    if(rule.ruleType == Rules.Daily){
+                        rule.intervals.map((intervals: any) => {
+                            eachDay.intervals.push({start: intervals.start, end: intervals.end});
+                        });
+                    }
+
+                });
+                
+            });
+
+            updateJson(nameFile, arraySchedules);
+
+
+            response.json(arraySchedules);
+
+        } catch (error) {
+            return badRequest(response, "algo de errado ocorreu na lista de horários: " + error.message);
         }
 
-        const arr = newArray;
-
-        
-        return response.json(schedule);
-    }catch(error){
-        badRequest(response, "erro listar horário: " + error.message)
     }
-}
 
 }
 
-export default SchedulesController;
-
-
-
-
+export default SchedulesController

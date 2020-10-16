@@ -1,0 +1,1 @@
+[{"ruleType":"Specific Day","day":"10/25/2020","intervals":[{"start":"9:30","end":"10:20"},{"start":"10:30","end":"11:00"}],"id":1},{"ruleType":"Weekly","weekDay":[1,2],"intervals":[{"start":"15:00","end":"15:30"}],"id":2},{"ruleType":"Daily","intervals":[{"start":"12:00","end":"12:30"}],"id":3}]

@@ -2,7 +2,7 @@ import { start } from "repl"
 
 import Intervals from './intervals'
 
-export interface Schedules {
-    day: Date,
+export default interface Schedules {
+    day: string,
     intervals: Intervals[]
 }

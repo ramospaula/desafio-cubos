@@ -27,7 +27,8 @@ npm run dev
 ### dia específico
 
 ```bash
-### exemplo para o body da requisição
+Exemplo para o body da requisição
+POST http://localhost:3333/rules
 {
   "ruleType":"Specific Day",
   "day":"10/25/2020",
@@ -47,7 +48,8 @@ npm run dev
 ### semanalmente
 
 ```bash
-### exemplo para o body da requisição
+Exemplo para o body da requisição
+POST http://localhost:3333/rules
 {
   "ruleType":"Weekly",
   "weekDay":[1, 2],
@@ -63,7 +65,8 @@ npm run dev
 ### diariamente
 
 ```bash
-### exemplo para o body da requisição
+Exemplo para o body da requisição
+POST http://localhost:3333/rules
 {
   "ruleType":"Daily",
   "intervals":[

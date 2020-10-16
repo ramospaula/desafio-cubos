@@ -26,8 +26,8 @@ npm run dev
 
 ### dia específico
 
-```bash
 Exemplo para o body da requisição
+```bash
 POST http://localhost:3333/rules
 {
   "ruleType":"Specific Day",
@@ -47,8 +47,8 @@ POST http://localhost:3333/rules
 
 ### semanalmente
 
-```bash
 Exemplo para o body da requisição
+```bash
 POST http://localhost:3333/rules
 {
   "ruleType":"Weekly",
@@ -64,8 +64,8 @@ POST http://localhost:3333/rules
 
 ### diariamente
 
-```bash
 Exemplo para o body da requisição
+```bash
 POST http://localhost:3333/rules
 {
   "ruleType":"Daily",
@@ -99,8 +99,8 @@ GET http://localhost:3333/schedules
 ```
 Na Query da consulta deve esta presente as datas dos intervalos com start(data inicial) e end(data final)
 
-```bash
 Exemplo para a query da requisição
+```bash
 start = 10/24/2020
 end = 10/26/2020
 ```

@@ -97,7 +97,7 @@ GET http://localhost:3333/rules
 ```bash
 GET http://localhost:3333/schedules
 ```
-Na Query da consulta deve esta presente as datas dos intervalos com start(data inicial) e end(data final)
+Na query da requisição deve esta presente as datas dos intervalos com start(data inicial) e end(data final)
 
 Exemplo para a query da requisição
 ```bash
@@ -106,4 +106,4 @@ end = 10/26/2020
 ```
 A URL PREVIEW do exemplo deverá ficar assim: http://localhost:3333/schedules?start=10%2F24%2F2020&end=10%2F26%2F2020
 
-
+### Todos os dados estão salvos nos arquivos rules.json e schedules.json na raiz do projeto
